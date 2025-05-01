@@ -1,14 +1,25 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import '../../assets/styles/Error.css';
+import logo from '../../assets/images/logo.png';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="dashboard-container">
-      <h1>Benvenuto nella Dashboard</h1>
-      <p>Sei loggato come: {user?.username}</p>
-      <button onClick={logout}>Logout</button>
+    <div className="error-container">
+      <div className="error-box">
+        <img src={logo} alt="Logo" className="login-logo" />
+        <div className="error-code">👋</div>
+        <h1>Ciao, {user?.name || 'utente'}!</h1>
+        <div className="error-message">
+          Benvenuto nella tua dashboard personale.<br />
+          Da qui potrai gestire il tuo account e molto altro.
+        </div>
+        <button onClick={logout} className="error-button">
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-const API_URL = 'https://url.api'; // TODO: inserire l'endpoint
+const API_URL = 'http://localhost:8080/auth';
 
 export const login = async (username, password) => {
   try {
@@ -10,16 +10,48 @@ export const login = async (username, password) => {
       body: JSON.stringify({ username, password }),
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.message || 'Login failed');
+      const errorText = await response.text();
+      let errorMessage;
+      try {
+        errorMessage = JSON.parse(errorText).message;
+      } catch {
+        errorMessage = errorText;
+      }
+      throw new Error(errorMessage || 'Login failed');
     }
 
-    return data;
-
+    return await response.json();
   } catch (error) {
-    console.error('Errore login:', error);
-    throw new Error('Error during login. Check connection or server.');
+    console.error('Login error:', error);
+    throw new Error('Error during login. Please check your connection or try again later.');
+  }
+};
+
+export const createFirstUser = async (userData) => {
+  try {
+    const response = await fetch(`${API_URL}/createFirstUser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      let errorMessage;
+      try {
+        errorMessage = JSON.parse(errorText).message;
+      } catch {
+        errorMessage = errorText;
+      }
+      throw new Error(errorMessage || 'Registration failed');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw new Error('Error during registration. Please check your connection or try again later.');
   }
 };
