@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 
 import Login from './components/pages/Login';
 import Dashboard from './components/pages/Dashboard';
+import Error404 from './components/pages/Error404';
 import PrivateRoute from './components/common/PrivateRoute';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -18,7 +18,7 @@ const Login = () => {
       await login(username, password); // TODO: chiama login da context
       navigate('/dashboard');
     } catch (error) {
-      setErrorMessage(error.message || 'Login fallito');
+      setErrorMessage(error.message || 'Login failed');
     }
   };
 
@@ -50,7 +50,7 @@ const Login = () => {
               required 
             />
           </div>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {errorMessage && <div className="login-error-message">{errorMessage}</div>}
           <button type="submit" className="login-button">Login</button>
         </form>
       </div>
