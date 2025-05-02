@@ -1,27 +1,110 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Menu, Home, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import '../../assets/styles/Error.css';
 import logo from '../../assets/images/logo.png';
+import '../../assets/styles/Dashboard.css';
 
-const Dashboard = () => {
+const SidebarApp = () => {
   const { user, logout } = useAuth();
+  const [activeItem, setActiveItem] = useState('home');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const menuItems = [
+    { id: 'home', label: 'Home', icon: <Home size={20} /> },
+    { id: 'profile', label: 'Profile', icon: <User size={20} /> },
+    { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
+  ];
+
+  const handleMenuClick = (itemId) => {
+    setActiveItem(itemId);
+    if (window.innerWidth <= 768) {
+      setSidebarOpen(false);
+    }
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
-    <div className="error-container">
-      <div className="error-box">
-        <img src={logo} alt="Logo" className="login-logo" />
-        <div className="error-code">👋</div>
-        <h1>Ciao, {user?.name || 'utente'}!</h1>
-        <div className="error-message">
-          Benvenuto nella tua dashboard personale.<br />
-          Da qui potrai gestire il tuo account e molto altro.
-        </div>
-        <button onClick={logout} className="error-button">
-          Logout
+    <div className="app-container">
+      <div className={`mobile-overlay ${sidebarOpen ? 'open' : ''}`} onClick={toggleSidebar}></div>
+      
+      <header className="mobile-header">
+        <button className="menu-button" onClick={toggleSidebar}>
+          <Menu size={24} />
         </button>
-      </div>
+        <div className="mobile-title">Camping Web</div>
+        <div style={{ width: '24px' }}></div> 
+      </header>
+      
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+        <div className="sidebar-header">
+          <h1 className="sidebar-title">Camping Web</h1>
+        </div>
+        
+        <nav className="sidebar-menu">
+          {menuItems.map((item) => (
+            <div
+              key={item.id}
+              className={`menu-item ${activeItem === item.id ? 'active' : ''}`}
+              onClick={() => handleMenuClick(item.id)}
+            >
+              <span className="menu-item-icon">{item.icon}</span>
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </nav>
+        
+        <div className="sidebar-footer">
+          <button className="logout-button" onClick={logout}>
+            <LogOut size={20} className="logout-icon" />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+      
+      <main className="main-content">
+        <div className="content-card">
+          <div className="welcome-section">
+            <img src={logo} alt="Logo" className="login-logo" />
+            <div className="content-title">Ciao, {user?.name || 'utente'}!</div>
+          </div>
+
+          {activeItem === 'home' && (
+            <>
+              <h2 className="content-title">Benvenuto nella Home</h2>
+              <p className="content-text">
+                Questa è la pagina principale dell'applicazione. Utilizza il menu laterale per 
+                navigare tra le diverse sezioni. Il design è stato personalizzato utilizzando
+                i colori e lo stile che preferisci.
+              </p>
+            </>
+          )}
+          
+          {activeItem === 'profile' && (
+            <>
+              <h2 className="content-title">Il tuo Profilo</h2>
+              <p className="content-text">
+                Qui puoi gestire le tue informazioni personali, le preferenze dell'account 
+                e altre impostazioni relative al tuo profilo utente.
+              </p>
+            </>
+          )}
+          
+          {activeItem === 'settings' && (
+            <>
+              <h2 className="content-title">Impostazioni</h2>
+              <p className="content-text">
+                Configura l'applicazione secondo le tue preferenze. Puoi modificare tema, 
+                notifiche e altre opzioni di personalizzazione.
+              </p>
+            </>
+          )}
+        </div>
+      </main>
     </div>
   );
 };
 
-export default Dashboard;
+export default SidebarApp;
