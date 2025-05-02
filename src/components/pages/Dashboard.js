@@ -11,8 +11,8 @@ const SidebarApp = () => {
 
   const menuItems = [
     { id: 'home', label: 'Home', icon: <Home size={20} /> },
-    { id: 'profile', label: 'Profile', icon: <User size={20} /> },
-    { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
+    { id: 'profilo', label: 'Profilo', icon: <User size={20} /> },
+    { id: 'impostazioni', label: 'Impostazioni', icon: <Settings size={20} /> }
   ];
 
   const handleMenuClick = (itemId) => {
@@ -35,11 +35,12 @@ const SidebarApp = () => {
           <Menu size={24} />
         </button>
         <div className="mobile-title">Camping Web</div>
-        <div style={{ width: '24px' }}></div> 
+        <div style={{ width: '24px' }}></div>
       </header>
       
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
+          <img src={logo} alt="Logo" className="sidebar-logo" />
           <h1 className="sidebar-title">Camping Web</h1>
         </div>
         
@@ -64,10 +65,10 @@ const SidebarApp = () => {
         </div>
       </aside>
       
+      {/* Contenuto principale */}
       <main className="main-content">
         <div className="content-card">
           <div className="welcome-section">
-            <img src={logo} alt="Logo" className="login-logo" />
             <div className="content-title">Ciao, {user?.name || 'utente'}!</div>
           </div>
 
@@ -82,7 +83,7 @@ const SidebarApp = () => {
             </>
           )}
           
-          {activeItem === 'profile' && (
+          {activeItem === 'profilo' && (
             <>
               <h2 className="content-title">Il tuo Profilo</h2>
               <p className="content-text">
@@ -92,7 +93,7 @@ const SidebarApp = () => {
             </>
           )}
           
-          {activeItem === 'settings' && (
+          {activeItem === 'impostazioni' && (
             <>
               <h2 className="content-title">Impostazioni</h2>
               <p className="content-text">
