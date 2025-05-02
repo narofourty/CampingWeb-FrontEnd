@@ -7,11 +7,12 @@ import FirstLogin from './components/pages/FirstLogin';
 import Dashboard from './components/pages/Dashboard';
 import Error404 from './components/pages/Error404';
 import PrivateRoute from './components/common/PrivateRoute';
+import SessionExpired from './components/pages/SessionExpired';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/first-login" element={<FirstLogin />} /> 
@@ -23,10 +24,11 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/session-expired" element={<SessionExpired />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
