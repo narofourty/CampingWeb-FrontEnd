@@ -25,6 +25,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [errorKey, setErrorKey] = useState(0);
+  const [loginAttempts, setLoginAttempts] = useState(0);
 
   const getRandomNotFoundMessage = () => {
     const randomIndex = Math.floor(Math.random() * notFoundMessages.length);
@@ -36,9 +37,15 @@ const Login = () => {
     try {
       await login(username, password);
       navigate('/dashboard');
+      setLoginAttempts(0);
     } catch (error) {
+      setLoginAttempts((prevAttempts) => prevAttempts + 1);
       if (error.message === 'User not found!') {
-        setErrorMessage(`User not found!\n${getRandomNotFoundMessage()}`);
+        if (loginAttempts === 68) {
+          setErrorMessage(`User not found!\nMhhh 69, Niceeee 😏💦`);
+        } else {
+          setErrorMessage(`User not found!\n${getRandomNotFoundMessage()}`);
+        }
       } else {
         setErrorMessage(error.message || 'Login failed');
       }
