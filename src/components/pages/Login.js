@@ -5,20 +5,21 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const { login } = useAuth(); // TODO: usa il context invece di importare il servizio
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [errorKey, setErrorKey] = useState(0);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await login(username, password); // TODO: chiama login da context
+      await login(username, password); 
       navigate('/dashboard');
     } catch (error) {
       setErrorMessage(error.message || 'Login failed');
+      setErrorKey((prev) => prev + 1);
     }
   };
 
@@ -50,7 +51,7 @@ const Login = () => {
               required 
             />
           </div>
-          {errorMessage && <div className="login-error-message">{errorMessage}</div>}
+          {errorMessage && ( <div key={errorKey} className="login-error-message"> {errorMessage} </div> )}
           <button type="submit" className="login-button">Login</button>
         </form>
       </div>

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/auth';
+const API_URL = 'http://192.168.1.9:8080/auth';
 
 export const login = async (username, password) => {
   try {
@@ -24,7 +24,7 @@ export const login = async (username, password) => {
     return await response.json();
   } catch (error) {
     console.error('Login error:', error);
-    throw new Error('Error during login. Please check your connection or try again later.');
+    throw error;
   }
 };
 
@@ -52,6 +52,6 @@ export const createFirstUser = async (userData) => {
     return await response.json();
   } catch (error) {
     console.error('Registration error:', error);
-    throw new Error('Error during registration. Please check your connection or try again later.');
+    throw error;
   }
 };
