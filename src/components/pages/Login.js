@@ -17,6 +17,24 @@ const notFoundMessages = [
   "Maybe fighting a cyber-dragon!",
 ];
 
+const connectionErrorMessages = [
+  "Server? Never heard of it.\nMaybe it went out for coffee ☕🚫",
+  "Can’t connect.\nMaybe the server joined a cult 🧘‍♂️🌐",
+  "Backend unavailable.\nProbably rage-quit 💢💻",
+  "Lost connection.\nBlame it on the Wi-Fi gremlins 🧌📶",
+  "Ping failed.\nMight be on a silent retreat 🏕️🔕",
+  "No response.\nProbably binge-watching Netflix 📺😴",
+  "Connection error.\nMaybe fighting DDoS demons 🧠🔥",
+  "Server ghosted us.\nClassic 👻💔",
+  "Backend’s on vacation.\nPostcard coming soon ✈️🌴",
+  "Trying to connect...\nMeanwhile, go touch grass 🌱📵",
+];
+
+const getRandomConnectionErrorMessage = () => {
+  const randomIndex = Math.floor(Math.random() * connectionErrorMessages.length);
+  return connectionErrorMessages[randomIndex];
+};
+
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -40,7 +58,10 @@ const Login = () => {
       setLoginAttempts(0);
     } catch (error) {
       setLoginAttempts((prevAttempts) => prevAttempts + 1);
-      if (error.message === 'User not found!') {
+    
+      if (error.message === 'Failed to fetch') {
+        setErrorMessage(getRandomConnectionErrorMessage());
+      } else if (error.message === 'User not found!') {
         if (loginAttempts === 68) {
           setErrorMessage(`User not found!\nMhhh 69, Niceeee 😏💦`);
         } else {
@@ -49,8 +70,9 @@ const Login = () => {
       } else {
         setErrorMessage(error.message || 'Login failed');
       }
+    
       setErrorKey((prev) => prev + 1);
-    }
+    }    
   };
 
   return (

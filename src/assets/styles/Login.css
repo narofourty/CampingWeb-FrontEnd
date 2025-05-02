@@ -22,7 +22,7 @@ body {
 .login-container {
   width: 100%;
   max-width: 440px;
-  min-width: 360px; 
+  min-width: 440px; 
   padding: 2rem;
   background-color: var(--form-background);
   border-radius: var(--radius);
