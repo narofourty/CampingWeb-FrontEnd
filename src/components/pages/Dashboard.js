@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, Home, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import ProfileComponent from './ProfileComponent';
 import logo from '../../assets/images/logo.png';
 import '../../assets/styles/Dashboard.css';
 
@@ -11,8 +12,8 @@ const SidebarApp = () => {
 
   const menuItems = [
     { id: 'home', label: 'Home', icon: <Home size={20} /> },
-    { id: 'profilo', label: 'Profilo', icon: <User size={20} /> },
-    { id: 'impostazioni', label: 'Impostazioni', icon: <Settings size={20} /> }
+    { id: 'profile', label: 'Profile', icon: <User size={20} /> },
+    { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
   ];
 
   const handleMenuClick = (itemId) => {
@@ -65,12 +66,8 @@ const SidebarApp = () => {
         </div>
       </aside>
       
-      {/* Contenuto principale */}
       <main className="main-content">
         <div className="content-card">
-          <div className="welcome-section">
-            <div className="content-title">Ciao, {user?.name || 'utente'}!</div>
-          </div>
 
           {activeItem === 'home' && (
             <>
@@ -83,17 +80,11 @@ const SidebarApp = () => {
             </>
           )}
           
-          {activeItem === 'profilo' && (
-            <>
-              <h2 className="content-title">Il tuo Profilo</h2>
-              <p className="content-text">
-                Qui puoi gestire le tue informazioni personali, le preferenze dell'account 
-                e altre impostazioni relative al tuo profilo utente.
-              </p>
-            </>
+          {activeItem === 'profile' && (
+            <ProfileComponent user={user} />
           )}
           
-          {activeItem === 'impostazioni' && (
+          {activeItem === 'settings' && (
             <>
               <h2 className="content-title">Impostazioni</h2>
               <p className="content-text">
