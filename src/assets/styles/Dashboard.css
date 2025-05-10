@@ -132,10 +132,11 @@ body {
 
 .content-card {
   background-color: var(--form-background);
-  width: 2200px;
+  width: 1600px;
   max-width: 90%;
   height: calc(100vh - 20px);
-  margin: 10px auto;
+  margin-left: 270px;
+  margin-right: 10px;
   border-radius: var(--radius);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   padding: 2rem;
