@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, Home, User, Settings, LogOut } from 'lucide-react';
+import { Menu, Home, User, Settings, LogOut, ShoppingBag } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import ProfileComponent from './ProfileComponent';
+import ProductComponent from './ProductComponent';
 import logo from '../../assets/images/logo.png';
 import '../../assets/styles/Dashboard.css';
 
@@ -11,10 +12,11 @@ const SidebarApp = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menuItems = [
-    { id: 'home', label: 'Home', icon: <Home size={20} /> },
-    { id: 'profile', label: 'Profile', icon: <User size={20} /> },
-    { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
-  ];
+  { id: 'home', label: 'Home', icon: <Home size={20} /> },
+  { id: 'product', label: 'Product', icon: <ShoppingBag size={20} /> },
+  { id: 'profile', label: 'Profile', icon: <User size={20} /> },
+  { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
+];
 
   const handleMenuClick = (itemId) => {
     setActiveItem(itemId);
@@ -78,6 +80,10 @@ const SidebarApp = () => {
                 i colori e lo stile che preferisci.
               </p>
             </>
+          )}
+
+          {activeItem === 'product' && (
+            <ProductComponent />
           )}
           
           {activeItem === 'profile' && (
