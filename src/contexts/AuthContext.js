@@ -55,16 +55,23 @@ export const AuthProvider = ({ children }) => {
   }, [user?.token, refreshUserToken]);
 
   const login = async (username, password) => {
-    const data = await loginService(username, password);
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('userData', JSON.stringify({ username }));
-    setUser({ username, token: data.token });
-    setSessionExpired(false);
+    try {
+      const data = await loginService(username, password);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userData', JSON.stringify({ username }));
+      setUser({ username, token: data.token });
+      setSessionExpired(false);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
+    localStorage.removeItem('activeItem');
     setUser(null);
   };
 
