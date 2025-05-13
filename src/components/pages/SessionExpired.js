@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import '../../assets/styles/SessionExpired.css';
+import '@styles/app.css';
 
 const SessionExpired = () => {
   const navigate = useNavigate();

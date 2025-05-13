@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import '../../assets/styles/Error.css';
+import '@styles/app.css';
 import logo from '../../assets/images/logo.png';
 
 const Error404 = () => {

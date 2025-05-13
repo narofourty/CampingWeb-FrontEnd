@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { Mail, User, Edit2, Save, X } from 'lucide-react';
-import '../../assets/styles/ProfileComponent.css';
+import '@styles/app.css';
 
 const ProfileComponent = ({ user }) => {
   const [isEditing, setIsEditing] = useState(false);

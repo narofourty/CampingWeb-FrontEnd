@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import '../../assets/styles/Login.css';
 import logo from '../../assets/images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { createFirstUser } from '../../services/authService';
 import { useAuth } from '../../contexts/AuthContext';
+import '@styles/app.css';
 
 const FirstLogin = () => {
   const navigate = useNavigate();

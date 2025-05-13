@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../../assets/styles/Login.css';
 import logo from '../../assets/images/logo.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import '@styles/app.css';
 
 const notFoundMessages = [
   "Oops, digital hide-and-seek champion!",

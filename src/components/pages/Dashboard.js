@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import ProfileComponent from './ProfileComponent';
 import ProductComponent from './ProductComponent';
 import logo from '../../assets/images/logo.png';
-import '../../assets/styles/Dashboard.css';
+import '@styles/app.css';
 
 const SidebarApp = () => {
   const { user, logout } = useAuth();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import '@styles/app.css';
 
 const ProductComponent = () => {
   const { token } = useAuth();
