@@ -4,8 +4,24 @@ import { login as loginService, refreshToken } from '../services/authService';
 
 const AuthContext = createContext();
 
+const getInitialAuthState = () => {
+  const token = localStorage.getItem('token');
+  const userData = localStorage.getItem('userData');
+  if (token && userData) {
+    try {
+      return { ...JSON.parse(userData), token };
+    } catch (error) {
+      console.error('Error parsing userData from localStorage:', error);
+      return null;
+    }
+  } else if (token) {
+    return { token };
+  }
+  return null;
+};
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getInitialAuthState());
   const [sessionExpired, setSessionExpired] = useState(false);
   const navigate = useNavigate();
 
@@ -27,18 +43,6 @@ export const AuthProvider = ({ children }) => {
       navigate('/session-expired');
     }
   }, [navigate]);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('userData');
-
-    if (token && userData) {
-      const parsedUserData = JSON.parse(userData);
-      setUser({ ...parsedUserData, token });
-    } else if (token) {
-      setUser({ token });
-    }
-  }, []);
 
   useEffect(() => {
     if (!user?.token) return;
