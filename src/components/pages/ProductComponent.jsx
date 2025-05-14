@@ -1,62 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useProducts } from '../../hooks/useProducts';
 import '@styles/app.css';
 
 const ProductComponent = () => {
   const { token } = useAuth();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { products, loading, error } = useProducts(token);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://192.168.1.67:8080/product/all', {
-          method: 'GET',
-          headers: {
-            Token: `${token}`,
-            Accept: 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          let errorMessage;
-          try {
-            errorMessage = JSON.parse(errorText).message;
-          } catch {
-            errorMessage = errorText;
-          }
-          throw new Error(errorMessage || 'Errore nel recupero dei prodotti.');
-        }
-
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        console.error('Errore nel recupero dei prodotti:', err);
-        setError('Errore nel caricamento dei prodotti.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [token]);
-
-  if (loading) return <p>Caricamento in corso...</p>;
+  if (loading) return <p>Loading..</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <h2 className="content-title">Lista Prodotti</h2>
+      <h2 className="content-title">Product List</h2>
       <table className="product-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Prezzo</th>
-            <th>Data Inizio</th>
-            <th>Data Fine</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Start Data</th>
+            <th>End Data</th>
           </tr>
         </thead>
         <tbody>
