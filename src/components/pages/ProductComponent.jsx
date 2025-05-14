@@ -19,8 +19,8 @@ const ProductComponent = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Price</th>
-            <th>Start Data</th>
-            <th>End Data</th>
+            <th>Start Date</th>
+            <th>End Date</th>
           </tr>
         </thead>
         <tbody>
