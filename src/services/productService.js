@@ -20,3 +20,24 @@ export const fetchAllProducts = async (token) => {
 
   return response.json();
 };
+
+export const deleteProduct = async (id, token) => {
+  const response = await fetch(`http://localhost:8080/product?id=${id}`, {
+    method: 'DELETE',
+    headers: {
+      Token: `${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    let message = 'Error deleting product.';
+    try {
+      message = JSON.parse(text).message || message;
+    } catch {
+      message = text || message;
+    }
+    throw new Error(message);
+  }
+};
