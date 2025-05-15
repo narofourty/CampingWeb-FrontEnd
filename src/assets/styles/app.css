@@ -845,12 +845,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: space-around;
-  gap: 1rem;
-}
-
 .confirm-button {
   background-color: #ff4d4f;
   color: #fff;
@@ -877,4 +871,81 @@ body {
 
 .cancel-button:hover {
   background-color: #e0e0e0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+}
+
+.modal h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary, #333);
+}
+
+.modal p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #555555;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.add-form input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.add-form input:focus {
+  border-color: var(--accent, #8b6914);
+  outline: none;
+}
+
+.add-form textarea {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+.add-form textarea:focus {
+  border-color: var(--accent, #8b6914);
+  outline: none;
+}
+
+.modal.delete-modal .modal-actions {
+  justify-content: center !important;
+  gap: 1rem;
 }

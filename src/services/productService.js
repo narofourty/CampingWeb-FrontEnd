@@ -41,3 +41,28 @@ export const deleteProduct = async (id, token) => {
     throw new Error(message);
   }
 };
+
+export const createProduct = async (product, token) => {
+  const response = await fetch('http://localhost:8080/product', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Token': `${token}`,
+    },
+    body: JSON.stringify(product),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    let message = 'Error creating product.';
+    try {
+      message = JSON.parse(text).message || message;
+    } catch {
+      message = text || message;
+    }
+    throw new Error(message);
+  }
+
+  return response.json();
+};

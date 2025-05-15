@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchAllProducts, deleteProduct as deleteProductService } from '../services/productService';
+import { fetchAllProducts, deleteProduct as deleteProductService, createProduct as createProductService } from '../services/productService';
 
 export const useProducts = (token) => {
   const [products, setProducts] = useState([]);
@@ -29,9 +29,20 @@ export const useProducts = (token) => {
     }
   };
 
+  const addProduct = async (product) => {
+    try {
+      const createdProduct = await createProductService(product, token);
+      setProducts((prev) => [...prev, createdProduct]);
+    } catch (err) {
+      console.error(err);
+      setError('Error creating product.');
+      throw err;
+    }
+  };
+
   useEffect(() => {
     if (token) loadProducts();
   }, [token]);
 
-  return { products, loading, error, deleteProduct };
+  return { products, loading, error, deleteProduct, addProduct };
 };

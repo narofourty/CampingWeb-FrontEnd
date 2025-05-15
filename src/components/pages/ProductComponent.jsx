@@ -1,32 +1,60 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useProducts } from '../../hooks/useProducts';
-import { Trash2 } from 'lucide-react';
+import { Trash2, PlusCircle } from 'lucide-react';
 import '@styles/app.css';
 
 const ProductComponent = () => {
   const { token } = useAuth();
-  const { products, loading, error, deleteProduct } = useProducts(token);
+  const { products, loading, error, deleteProduct, addProduct } = useProducts(token);
 
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
-  const openModal = (id) => {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    price: '',
+    description: '',
+  });
+
+
+  const openDeleteModal = (id) => {
     setProductToDelete(id);
-    setShowModal(true);
+    setShowDeleteModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
     setProductToDelete(null);
   };
 
   const confirmDelete = async () => {
     try {
       await deleteProduct(productToDelete);
-      closeModal();
+      closeDeleteModal();
     } catch (err) {
       alert(err.message || 'An error occurred while deleting the product.');
+    }
+  };
+
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await addProduct({
+        name: newProduct.name,
+        price: parseFloat(newProduct.price),
+        description: newProduct.description || '',
+      });
+      setShowAddModal(false);
+      setNewProduct({ name: '', price: '', description: '' });
+    } catch (err) {
+      alert(err.message || 'An error occurred while creating the product.');
     }
   };
 
@@ -35,7 +63,14 @@ const ProductComponent = () => {
 
   return (
     <div>
-      <h2 className="content-title">Product List</h2>
+      <div className="product-header">
+        <h2 className="content-title">Product List</h2>
+        <button className="edit-button" onClick={() => setShowAddModal(true)}>
+          <PlusCircle size={18} />
+          <span>Add Product</span>
+        </button>
+      </div>
+
       <table className="product-table">
         <thead>
           <tr>
@@ -57,7 +92,7 @@ const ProductComponent = () => {
               <td>{product.endDate?.split('T')[0]}</td>
               <td>
                 <button
-                  onClick={() => openModal(product.id)}
+                  onClick={() => openDeleteModal(product.id)}
                   className="delete-btn"
                   title="Delete product"
                 >
@@ -69,15 +104,52 @@ const ProductComponent = () => {
         </tbody>
       </table>
 
-      {showModal && (
+      {showDeleteModal && (
         <div className="modal-overlay">
-          <div className="modal">
+          <div className="modal delete-modal">
             <h3>Confirm Deletion</h3>
             <p>Are you sure you want to delete this product?</p>
             <div className="modal-actions">
               <button className="confirm-button" onClick={confirmDelete}>Delete</button>
-              <button className="cancel-button" onClick={closeModal}>Cancel</button>
+              <button className="cancel-button" onClick={closeDeleteModal}>Cancel</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showAddModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Add New Product</h3>
+            <form onSubmit={handleAddSubmit} className="add-form">
+              <input
+                type="text"
+                name="name"
+                placeholder="Product Name"
+                value={newProduct.name}
+                onChange={handleAddChange}
+                required
+              />
+              <input
+                type="number"
+                name="price"
+                placeholder="Price (€)"
+                value={newProduct.price}
+                onChange={handleAddChange}
+                required
+              />
+              <textarea
+                name="description"
+                placeholder="Description (optional)"
+                value={newProduct.description}
+                onChange={handleAddChange}
+                rows={3}
+              />
+              <div className="modal-actions">
+                <button type="submit" className="save-button">Add</button>
+                <button type="button" className="cancel-button" onClick={() => setShowAddModal(false)}>Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
