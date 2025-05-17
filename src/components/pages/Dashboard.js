@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Home, User, Settings, LogOut, ShoppingBag } from 'lucide-react';
+import {Menu, Home, User, Settings, LogOut, ShoppingBag, Users, HandPlatter, NotebookPen} from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import ProfileComponent from './ProfileComponent';
 import ProductComponent from './ProductComponent';
+import UsersComponent from "./UsersComponent";
 import logo from '../../assets/images/logo.png';
 import '@styles/app.css';
+
 
 const SidebarApp = () => {
   const { user, logout } = useAuth();
@@ -16,8 +18,11 @@ const SidebarApp = () => {
 
   const menuItems = [
     { id: 'home', label: 'Home', icon: <Home size={20} /> },
+    { id: 'reservation', label: 'Reservations', icon: <NotebookPen size={20} /> },
     { id: 'product', label: 'Product', icon: <ShoppingBag size={20} /> },
+    { id: 'services', label: 'Services', icon: <HandPlatter size={20} /> },
     { id: 'profile', label: 'Profile', icon: <User size={20} /> },
+    { id: 'users', label: 'Users', icon: <Users size={20} /> },
     { id: 'settings', label: 'Settings', icon: <Settings size={20} /> }
   ];
 
@@ -96,6 +101,9 @@ const SidebarApp = () => {
 
           {activeItem === 'profile' && (
             <ProfileComponent user={user} />
+          )}
+          {activeItem === 'users' && (
+              <UsersComponent user={user} />
           )}
 
           {activeItem === 'settings' && (
