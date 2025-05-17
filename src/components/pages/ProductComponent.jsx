@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useProducts } from '../../hooks/useProducts';
-import { Trash2, PlusCircle } from 'lucide-react';
+import { Trash2, PlusCircle, Pencil } from 'lucide-react';
 import '@styles/app.css';
 
 const ProductComponent = () => {
@@ -10,6 +10,9 @@ const ProductComponent = () => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
@@ -27,6 +30,16 @@ const ProductComponent = () => {
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
     setProductToDelete(null);
+  };
+
+  const openEditModal = (product) => {
+  setProductToEdit({ ...product });
+  setShowEditModal(true);
+  };
+
+  const closeEditModal = () => {
+    setShowEditModal(false);
+    setProductToEdit(null);
   };
 
   const confirmDelete = async () => {
@@ -92,6 +105,13 @@ const ProductComponent = () => {
               <td>{product.endDate?.split('T')[0]}</td>
               <td>
                 <button
+                  onClick={() => openEditModal(product)}
+                  className="edit-btn"
+                  title="Edit product"
+                >
+                  <Pencil size={18} />
+                </button>
+                <button
                   onClick={() => openDeleteModal(product.id)}
                   className="delete-btn"
                   title="Delete product"
@@ -148,6 +168,49 @@ const ProductComponent = () => {
               <div className="modal-actions">
                 <button type="submit" className="save-button">Add</button>
                 <button type="button" className="cancel-button" onClick={() => setShowAddModal(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      
+      {showEditModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Edit Product</h3>
+            <form className="add-form">
+              <label htmlFor="edit-price">Price (€)</label>
+              <input
+                id="edit-price"
+                type="number"
+                name="price"
+                placeholder="Price (€)"
+                value={productToEdit?.price || ''}
+                onChange={(e) =>
+                  setProductToEdit(prev => ({ ...prev, price: e.target.value }))
+                }
+                required
+              />
+
+              <label htmlFor="edit-description">Description</label>
+              <textarea
+                id="edit-description"
+                name="description"
+                placeholder="Description (optional)"
+                value={productToEdit?.description || ''}
+                onChange={(e) =>
+                  setProductToEdit(prev => ({ ...prev, description: e.target.value }))
+                }
+                rows={3}
+              />
+
+              <div className="modal-actions">
+                <button type="button" className="save-button" disabled>
+                  Save
+                </button>
+                <button type="button" className="cancel-button" onClick={closeEditModal}>
+                  Cancel
+                </button>
               </div>
             </form>
           </div>
