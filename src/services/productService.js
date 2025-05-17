@@ -66,3 +66,34 @@ export const createProduct = async (product, token) => {
 
   return response.json();
 };
+
+export const updateProduct = async (product, token) => {
+  const payload = {
+    id: product.id,
+    price: parseFloat(product.price),
+    description: product.description || null,
+  };
+
+  const response = await fetch(`http://localhost:8080/product`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Token': `${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    let message = 'Error updating product.';
+    try {
+      message = JSON.parse(text).message || message;
+    } catch {
+      message = text || message;
+    }
+    throw new Error(message);
+  }
+
+  return response.json();
+};

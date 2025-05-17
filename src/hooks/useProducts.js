@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
-import { fetchAllProducts, deleteProduct as deleteProductService, createProduct as createProductService } from '../services/productService';
+import { useEffect, useState, useCallback } from 'react';
+import {
+  fetchAllProducts,
+  deleteProduct as deleteProductService,
+  createProduct as createProductService,
+  updateProduct as updateProductService
+} from '../services/productService';
 
 export const useProducts = (token) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true);
     try {
       const data = await fetchAllProducts(token);
@@ -17,7 +22,7 @@ export const useProducts = (token) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   const deleteProduct = async (id) => {
     try {
@@ -40,9 +45,22 @@ export const useProducts = (token) => {
     }
   };
 
+  const updateProduct = async (updatedProduct) => {
+    try {
+      const result = await updateProductService(updatedProduct, token);
+      setProducts((prev) =>
+        prev.map((p) => (p.id === result.id ? result : p))
+      );
+    } catch (err) {
+      console.error(err);
+      setError('Error updating product.');
+      throw err;
+    }
+  };
+
   useEffect(() => {
     if (token) loadProducts();
-  }, [token]);
+  }, [token, loadProducts]);
 
-  return { products, loading, error, deleteProduct, addProduct };
+  return { products, loading, error, deleteProduct, addProduct, updateProduct };
 };

@@ -6,7 +6,7 @@ import '@styles/app.css';
 
 const ProductComponent = () => {
   const { token } = useAuth();
-  const { products, loading, error, deleteProduct, addProduct } = useProducts(token);
+  const { products, loading, error, deleteProduct, addProduct, updateProduct } = useProducts(token);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -205,7 +205,23 @@ const ProductComponent = () => {
               />
 
               <div className="modal-actions">
-                <button type="button" className="save-button" disabled>
+                <button
+                  type="button"
+                  className="save-button"
+                  disabled={!productToEdit?.price || isNaN(parseFloat(productToEdit.price))}
+                  onClick={async () => {
+                    try {
+                      await updateProduct({
+                        ...productToEdit,
+                        price: parseFloat(productToEdit.price),
+                        description: productToEdit.description || null,
+                      });
+                      closeEditModal();
+                    } catch (err) {
+                      alert("Error while saving: " + err.message);
+                    }
+                  }}
+                >
                   Save
                 </button>
                 <button type="button" className="cancel-button" onClick={closeEditModal}>
