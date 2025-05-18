@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { Mail, User, Edit2, Save, X } from 'lucide-react';
 import '@styles/app.css';
 
-const ProfileComponent = ({ user }) => {
-  const [isEditing, setIsEditing] = useState(false);
+const ProfileComponent = ({ employee, loading, error, username }) => {
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    surname: user?.surname || '',
-    username: user?.username || '',
-    email: user?.email || ''
+    name: '',
+    surname: '',
+    email: '',
+    username: ''
   });
+
+  const fullFormData = { ...formData, username };
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (employee) {
+      setFormData({
+        name: employee.name || '',
+        surname: employee.surname || '',
+        email: employee.email || '',
+        username: employee.username || ''
+      });
+    }
+  }, [employee]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,20 +36,16 @@ const ProfileComponent = ({ user }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Logic to save updated data
     console.log('Data to save:', formData);
     setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setFormData({
-      name: user?.name || '',
-      surname: user?.surname || '',
-      username: user?.username || '',
-      email: user?.email || ''
-    });
     setIsEditing(false);
   };
+
+  if (loading) return <p className="loading-text">Caricamento dati...</p>;
+  if (error) return <p className="error-text">Errore: {error.message}</p>;
 
   return (
     <div className="profile-container">
@@ -89,13 +99,7 @@ const ProfileComponent = ({ user }) => {
                           disabled
                           data-tooltip-id="name-tooltip"
                         />
-                        <ReactTooltip
-                          id="name-tooltip" 
-                          place="bottom"
-                          type="dark"
-                          effect="solid"
-                          className="custom-tooltip"
-                        >
+                        <ReactTooltip id="name-tooltip" place="bottom" type="dark" effect="solid" className="custom-tooltip">
                           Editing will be available soon
                         </ReactTooltip>
                       </div>
@@ -114,13 +118,7 @@ const ProfileComponent = ({ user }) => {
                           disabled
                           data-tooltip-id="surname-tooltip"
                         />
-                        <ReactTooltip
-                          id="surname-tooltip"
-                          place="bottom"
-                          type="dark"
-                          effect="solid"
-                          className="custom-tooltip"
-                        >
+                        <ReactTooltip id="surname-tooltip" place="bottom" type="dark" effect="solid" className="custom-tooltip">
                           Editing will be available soon
                         </ReactTooltip>
                       </div>
@@ -128,40 +126,13 @@ const ProfileComponent = ({ user }) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="form-card">
                 <div className="form-card-header">
                   <Mail size={20} className="form-card-icon" />
                   <h3 className="form-card-title">Account Information</h3>
                 </div>
                 <div className="form-card-content">
-                  <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <div className="input-wrapper">
-                      <User size={16} className="input-icon" />
-                      <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="form-input disabled-input with-icon"
-                        placeholder="Enter your username"
-                        disabled
-                        data-tooltip-id="username-tooltip"
-                      />
-                      <ReactTooltip
-                        id="username-tooltip"
-                        place="bottom"
-                        type="dark"
-                        effect="solid"
-                        className="custom-tooltip"
-                      >
-                        Editing will be available soon
-                      </ReactTooltip>
-                    </div>
-                  </div>
-
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <div className="input-wrapper">
@@ -177,13 +148,7 @@ const ProfileComponent = ({ user }) => {
                         disabled
                         data-tooltip-id="email-tooltip"
                       />
-                      <ReactTooltip
-                        id="email-tooltip"
-                        place="bottom"
-                        type="dark"
-                        effect="solid"
-                        className="custom-tooltip"
-                      >
+                      <ReactTooltip id="email-tooltip" place="bottom" type="dark" effect="solid" className="custom-tooltip">
                         Editing will be available soon
                       </ReactTooltip>
                     </div>
@@ -191,7 +156,7 @@ const ProfileComponent = ({ user }) => {
                 </div>
               </div>
             </div>
-            
+
             <div className="form-actions">
               <button
                 type="submit"
@@ -212,25 +177,22 @@ const ProfileComponent = ({ user }) => {
           <div className="profile-info">
             <div className="info-card">
               <div className="info-row">
+                <div className="info-label">Username</div>
+                <div className="info-value">{username || '—'}</div>
+              </div>
+              <div className="info-row">
                 <div className="info-label">First Name</div>
-                <div className="info-value">{user?.name || '—'}</div>
+                <div className="info-value">{formData.name || '—'}</div>
               </div>
               <div className="info-row">
                 <div className="info-label">Last Name</div>
-                <div className="info-value">{user?.surname || '—'}</div>
-              </div>
-              <div className="info-row">
-                <div className="info-label">Username</div>
-                <div className="info-value">
-                  <User size={16} className="info-icon" />
-                  {user?.username || '—'}
-                </div>
+                <div className="info-value">{formData.surname || '—'}</div>
               </div>
               <div className="info-row">
                 <div className="info-label">Email</div>
                 <div className="info-value">
                   <Mail size={16} className="info-icon" />
-                  {user?.email || '—'}
+                  {formData.email || '—'}
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Menu, Home, User, Settings, LogOut, ShoppingBag, Users, HandPlatter, NotebookPen} from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useEmployee } from '../../hooks/useEmployee';
 import ProfileComponent from './ProfileComponent';
 import ProductComponent from './ProductComponent';
 import UsersComponent from "./UsersComponent";
@@ -10,6 +11,7 @@ import '@styles/app.css';
 
 const SidebarApp = () => {
   const { user, logout } = useAuth();
+  const { employee, loading, error } = useEmployee(user?.username, user?.token);
   const [activeItem, setActiveItem] = useState(() => {
     const storedItem = localStorage.getItem('activeItem');
     return storedItem || 'home';
@@ -100,7 +102,7 @@ const SidebarApp = () => {
           )}
 
           {activeItem === 'profile' && (
-            <ProfileComponent user={user} />
+            <ProfileComponent  employee={employee}  loading={loading}  error={error}  username={user?.username}/>
           )}
           {activeItem === 'users' && (
               <UsersComponent user={user} />

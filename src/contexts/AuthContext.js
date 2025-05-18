@@ -7,17 +7,14 @@ const AuthContext = createContext();
 const getInitialAuthState = () => {
   const token = localStorage.getItem('token');
   const userData = localStorage.getItem('userData');
-  if (token && userData) {
-    try {
-      return { ...JSON.parse(userData), token };
-    } catch (error) {
-      console.error('Error parsing userData from localStorage:', error);
-      return null;
-    }
-  } else if (token) {
-    return { token };
+
+  try {
+    const parsedUser = userData ? JSON.parse(userData) : {};
+    return token ? { ...parsedUser, token } : null;
+  } catch (error) {
+    console.error('Error parsing userData from localStorage:', error);
+    return token ? { token } : null;
   }
-  return null;
 };
 
 export const AuthProvider = ({ children }) => {
