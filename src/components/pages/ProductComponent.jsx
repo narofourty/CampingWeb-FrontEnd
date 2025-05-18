@@ -90,8 +90,7 @@ const ProductComponent = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Price</th>
-            <th>Start Date</th>
-            <th>End Date</th>
+            <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -101,8 +100,7 @@ const ProductComponent = () => {
               <td>{product.id}</td>
               <td>{product.name || 'N/A'}</td>
               <td>{product.price} €</td>
-              <td>{product.startDate?.split('T')[0]}</td>
-              <td>{product.endDate?.split('T')[0]}</td>
+              <td>{product.description || '—'}</td>
               <td>
                 <button
                   onClick={() => openEditModal(product)}
