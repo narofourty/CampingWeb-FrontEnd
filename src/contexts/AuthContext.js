@@ -5,14 +5,14 @@ import { login as loginService, refreshToken } from '../services/authService';
 const AuthContext = createContext();
 
 const getInitialAuthState = () => {
-  const token = localStorage.getItem('token');
-  const userData = localStorage.getItem('userData');
+  const token = sessionStorage.getItem('token');
+  const userData = sessionStorage.getItem('userData');
 
   try {
     const parsedUser = userData ? JSON.parse(userData) : {};
     return token ? { ...parsedUser, token } : null;
   } catch (error) {
-    console.error('Error parsing userData from localStorage:', error);
+    console.error('Error parsing userData from sessionStorage:', error);
     return token ? { token } : null;
   }
 };
@@ -54,11 +54,12 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     try {
       const data = await loginService(username, password);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userData', JSON.stringify({ username }));
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('userData', JSON.stringify({ username }));
+      localStorage.setItem('activeItem', 'home'); // reset scheda attiva
       setUser({ username, token: data.token });
       setSessionExpired(false);
-      navigate('/dashboard');
+      navigate('/dashboard/home', { replace: true });
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -66,8 +67,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userData');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userData');
     localStorage.removeItem('activeItem');
     setUser(null);
   };
